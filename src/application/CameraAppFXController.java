@@ -11,9 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
-import org.opencv.core.MatOfRect;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
@@ -28,6 +26,7 @@ public class CameraAppFXController {
     @FXML
     private ImageView currentFrame;
     private ScheduledExecutorService timer;
+    private ScheduledExecutorService timer2;
     private VideoCapture capture = new VideoCapture();
     private boolean blackAndWhite;
     private boolean blur;
@@ -37,12 +36,14 @@ public class CameraAppFXController {
     private Image imageToShow;
     private Mat frame;
     private String base_file = "snaps/";
-    private String filter = null;
     private FaceDetector faceDetector;
     private MatOfRect faces;
     private Utils utils;
 
     public CameraAppFXController() {
+        blackAndWhite = false;
+        blur = false;
+        negative = false;
         faceDetector = new FaceDetector();
         utils = new Utils();
     }
@@ -57,15 +58,37 @@ public class CameraAppFXController {
                     public void run() {
                         frame = CameraAppFXController.this.grabFrame();
 
-//                        System.out.println(frame.get(0, 0)[0]);
-                        faces = faceDetector.getFaces(frame);
-                        imageToShow = Utils.mat2Image(faceDetector.drawFaces(frame, faces));
+                        Mat frameCopy = frame.clone();
+
+                        Imgproc.putText(frameCopy, "Faces detected: " + ((faces != null && !faces.empty())? faces.rows(): 0), new Point(400, 30), Core.FONT_HERSHEY_COMPLEX, 0.7, new Scalar(1, 0, 0), 2);
+                        if(faces != null && !faces.empty())
+                            imageToShow = Utils.mat2Image(faceDetector.drawFaces(frameCopy, faces));
+                        else
+                            imageToShow = Utils.mat2Image(frameCopy);
 
                         CameraAppFXController.this.updateImageView(CameraAppFXController.this.currentFrame, imageToShow);
                     }
                 };
+
+                Runnable faceDetectorRunnable = new Runnable() {
+                    public void run() {
+                        try {
+                            if(cameraActive)
+                            {
+                                faces = faceDetector.getFaces(frame);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println(e);
+                        }
+                    }
+                };
+
                 this.timer = Executors.newSingleThreadScheduledExecutor();
-                this.timer.scheduleAtFixedRate(frameGrabber, 0L, 10L, TimeUnit.MILLISECONDS);
+                this.timer.scheduleAtFixedRate(frameGrabber, 0L, 1L, TimeUnit.MILLISECONDS);
+                this.timer2 = Executors.newSingleThreadScheduledExecutor();
+                this.timer2.scheduleAtFixedRate(faceDetectorRunnable, 1000L, 1L, TimeUnit.MILLISECONDS);
                 this.button.setText("Stop Camera");
             } else {
                 System.err.println("Impossible to open the camera connection...");
@@ -160,6 +183,15 @@ public class CameraAppFXController {
             try {
                 this.timer.shutdown();
                 this.timer.awaitTermination(33L, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException var2) {
+                System.err.println(var2);
+            }
+        }
+
+        if (this.timer2 != null && !this.timer2.isShutdown()) {
+            try {
+                this.timer2.shutdown();
+                this.timer2.awaitTermination(33L, TimeUnit.MILLISECONDS);
             } catch (InterruptedException var2) {
                 System.err.println(var2);
             }
