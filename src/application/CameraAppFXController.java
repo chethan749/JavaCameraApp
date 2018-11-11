@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
@@ -34,10 +35,16 @@ public class CameraAppFXController {
     private boolean cameraActive = false;
     private static int cameraId = 0;
     private Image imageToShow;
+    private Mat frame;
     private String base_file = "snaps/";
     private String filter = null;
+    private FaceDetector faceDetector;
+    private MatOfRect faces;
+    private Utils utils;
 
     public CameraAppFXController() {
+        faceDetector = new FaceDetector();
+        utils = new Utils();
     }
 
     @FXML
@@ -48,9 +55,12 @@ public class CameraAppFXController {
                 this.cameraActive = true;
                 Runnable frameGrabber = new Runnable() {
                     public void run() {
-                        Mat frame = CameraAppFXController.this.grabFrame();
-                        imageToShow = Utils.mat2Image(frame);
+                        frame = CameraAppFXController.this.grabFrame();
+
 //                        System.out.println(frame.get(0, 0)[0]);
+                        faces = faceDetector.getFaces(frame);
+                        imageToShow = Utils.mat2Image(faceDetector.drawFaces(frame, faces));
+
                         CameraAppFXController.this.updateImageView(CameraAppFXController.this.currentFrame, imageToShow);
                     }
                 };
@@ -71,17 +81,25 @@ public class CameraAppFXController {
     @FXML
     protected void save_image(ActionEvent event) {
         System.out.println(imageToShow);
-        BufferedImage image = SwingFXUtils.fromFXImage(imageToShow, null);
-        String timeStamp = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date());
-        String filename = "Snap-"+timeStamp;
-        File file = new File(base_file+filename);
+        BufferedImage image;
         try {
-            ImageIO.write(image, "png", file);
-            System.out.println("File "+filename+" saved!");
+            image = utils.Mat2BufferedImage(frame);
+            String timeStamp = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date());
+            String filename = "Snap-"+timeStamp;
+            File file = new File(base_file+filename);
+            try {
+                ImageIO.write(image, "png", file);
+                System.out.println("File "+filename+" saved!");
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
+        catch (Exception e) {
+            System.out.println("Image not saved!");
             e.printStackTrace();
         }
+
     }
 
     protected void black_white(ActionEvent event) {
