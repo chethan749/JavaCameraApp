@@ -1,13 +1,11 @@
 package application;
 
 import java.io.ByteArrayInputStream;
-import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
-
-import static org.opencv.core.CvType.CV_8U;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 public final class Utils {
     public Utils() {
@@ -25,11 +23,19 @@ public final class Utils {
         }
     }
 
-    protected static Mat getNegative(Mat frame)
-    {
+    protected static Mat getNegative(Mat frame) {
         Mat neg = Mat.zeros(frame.size(), CvType.CV_8UC3), white = new Mat(frame.size(), CvType.CV_8UC3, new Scalar(255, 255, 255));
-        System.out.println("Color:" + white.get(0, 0)[0] + ' ' + white.get(0, 0)[1] + ' ' + white.get(0, 0)[2]);
+//        System.out.println("Color:" + white.get(0, 0)[0] + ' ' + white.get(0, 0)[1] + ' ' + white.get(0, 0)[2]);
         Core.subtract(white, frame, neg);
         return neg;
+    }
+
+    static BufferedImage Mat2BufferedImage(Mat matrix)throws Exception {
+        MatOfByte mob=new MatOfByte();
+        Imgcodecs.imencode(".jpg", matrix, mob);
+        byte ba[]=mob.toArray();
+
+        BufferedImage bi= ImageIO.read(new ByteArrayInputStream(ba));
+        return bi;
     }
 }
