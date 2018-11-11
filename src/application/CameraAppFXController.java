@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
@@ -19,6 +20,9 @@ public class CameraAppFXController {
     private ImageView currentFrame;
     private ScheduledExecutorService timer;
     private VideoCapture capture = new VideoCapture();
+    private boolean blackAndWhite;
+    private boolean blur;
+    private boolean negative;
     private boolean cameraActive = false;
     private static int cameraId = 0;
 
@@ -53,13 +57,50 @@ public class CameraAppFXController {
 
     }
 
+    @FXML
+    protected void setBlackAndWhite(ActionEvent event)
+    {
+        blackAndWhite = true;
+        blur = false;
+        negative = false;
+    }
+
+    @FXML
+    protected void setBlur(ActionEvent event)
+    {
+        blackAndWhite = false;
+        blur = true;
+        negative = false;
+    }
+
+    @FXML
+    protected void setNegative(ActionEvent event)
+    {
+        blackAndWhite = false;
+        blur = false;
+        negative = true;
+    }
+
+    @FXML
+    protected void noEffects(ActionEvent event)
+    {
+        blackAndWhite = false;
+        blur = false;
+        negative = false;
+    }
+
     private Mat grabFrame() {
         Mat frame = new Mat();
         if (this.capture.isOpened()) {
             try {
                 this.capture.read(frame);
                 if (!frame.empty()) {
-                    Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
+                    if(blackAndWhite)
+                        Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
+                    if(blur)
+                        Imgproc.GaussianBlur(frame, frame, new Size(15, 15), 0);
+                    if(negative)
+                        frame = Utils.getNegative(frame);
                 }
             } catch (Exception var3) {
                 System.err.println(var3);

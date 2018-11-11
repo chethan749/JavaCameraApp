@@ -2,11 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="354.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CameraAppFXController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CameraAppFXController">
     <bottom>
         <HBox alignment="CENTER" minHeight="55.0" prefHeight="55.0" prefWidth="425.0">
             <Button fx:id="button" alignment="CENTER" mnemonicParsing="false" onAction="#startCamera" text="Start Camera" />
@@ -16,6 +19,20 @@
         </HBox>
     </bottom>
     <center>
-        <ImageView fx:id="currentFrame" fitHeight="301.0" fitWidth="425.0" />
+        <ImageView fx:id="currentFrame" fitHeight="480.0" fitWidth="640.0" />
     </center>
+   <top>
+      <MenuBar fx:id="menu" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu fx:id="effectsMenu" mnemonicParsing="false" text="Effects">
+            <items>
+                  <MenuItem fx:id="noEffectsMenuEntry" mnemonicParsing="false" onAction="#noEffects" text="No effects" />
+              <MenuItem fx:id="blackAndWhiteMenuEntry" mnemonicParsing="false" onAction="#setBlackAndWhite" text="Black and White" />
+                  <MenuItem fx:id="blurMenuEntry" mnemonicParsing="false" onAction="#setBlur" text="Blur" />
+                  <MenuItem fx:id="negativeMenuEntry" mnemonicParsing="false" onAction="#setNegative" text="Negative" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
 </BorderPane>
