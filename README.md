@@ -10,5 +10,5 @@
   </ul>
 * Add SDK by providing path to <code>java-8-openjdk</code> directory under <code>Project Structure -> SDKs</code>.
 * Add <code>opencv-343.jar</code> as a module under <code>File -> Project Structure -> Modules -> Dependencies</code>.
-* Add <code>libopencv_java343.so</code> as a native library. To do this, <code>Edit configurations -> VM Options -> Add -D.java.library.path = \<folder containing libopencv_java343.so\></code>.
+* Add <code>libopencv_java343.so</code> as a native library. To do this, <code>Edit configurations -> VM Options -> Add -Djava.library.path = \<folder containing libopencv_java343.so\></code>.
 * Set Language Level 8 in <code>Project Structure -> Project</code> and <code>Project Structure -> Modules -> Dependencies</code> and <code>Project Structure -> Modules -> Sources</code>.
