@@ -35,6 +35,7 @@ public class CameraAppFXController {
     private static int cameraId = 0;
     private Image imageToShow;
     private String base_file = "snaps/";
+    private String filter = null;
 
     public CameraAppFXController() {
     }
@@ -81,6 +82,10 @@ public class CameraAppFXController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void black_white(ActionEvent event) {
+        
     }
 
     private Mat grabFrame() {
