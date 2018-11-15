@@ -25,7 +25,8 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 
-public class CameraAppFXController {
+public class CameraAppFXController
+{
     @FXML
     private Button cameraButton;
     @FXML
@@ -34,13 +35,15 @@ public class CameraAppFXController {
     private ImageView trackerFrame;
     @FXML
     private Button trackerButton;
-    private ScheduledExecutorService timer;
-    private ScheduledExecutorService timer2;
+    private ScheduledExecutorService cameraTimer;
+    private ScheduledExecutorService faceTimer;
+    private ScheduledExecutorService trackerTimer;
     private VideoCapture capture = new VideoCapture();
     private boolean blackAndWhite;
     private boolean blur;
     private boolean negative;
-    private boolean cameraActive = false;
+    private boolean cameraActive;
+    private boolean trackerActive;
     private static int cameraId = 0;
     private Image imageToShow;
     private Mat frame;
@@ -51,6 +54,7 @@ public class CameraAppFXController {
 
     public CameraAppFXController()
     {
+        cameraActive = false;
         blackAndWhite = false;
         blur = false;
         negative = false;
@@ -61,11 +65,21 @@ public class CameraAppFXController {
     @FXML
     protected void startCamera(ActionEvent event)
     {
-        if (!this.cameraActive) {
+        if(trackerActive)
+        {
+            this.trackerActive = false;
+            this.trackerButton.setText("Start Tracking");
+            this.stopTracking();
+        }
+
+        if (!this.cameraActive)
+        {
             this.capture.open(cameraId);
-            if (this.capture.isOpened()) {
+            if (this.capture.isOpened())
+            {
                 this.cameraActive = true;
-                Runnable frameGrabber = new Runnable() {
+                Runnable frameGrabber = new Runnable()
+                {
                     public void run() {
                         frame = CameraAppFXController.this.grabFrame();
 
@@ -77,13 +91,16 @@ public class CameraAppFXController {
                         else
                             imageToShow = Utils.mat2Image(frameCopy);
 
-                        CameraAppFXController.this.updateImageView(CameraAppFXController.this.currentFrame, imageToShow);
+                        CameraAppFXController.this.currentFrame.setImage(imageToShow);
                     }
                 };
 
-                Runnable faceDetectorRunnable = new Runnable() {
-                    public void run() {
-                        try {
+                Runnable faceDetectorRunnable = new Runnable()
+                {
+                    public void run()
+                    {
+                        try
+                        {
                             if(cameraActive && !blur && !blackAndWhite && !negative)
                                 faces = faceDetector.getFaces(frame);
                             else
@@ -96,10 +113,10 @@ public class CameraAppFXController {
                     }
                 };
 
-                this.timer = Executors.newSingleThreadScheduledExecutor();
-                this.timer.scheduleAtFixedRate(frameGrabber, 0L, 1L, TimeUnit.MILLISECONDS);
-                this.timer2 = Executors.newSingleThreadScheduledExecutor();
-                this.timer2.scheduleAtFixedRate(faceDetectorRunnable, 1000L, 1L, TimeUnit.MILLISECONDS);
+                this.cameraTimer = Executors.newSingleThreadScheduledExecutor();
+                this.cameraTimer.scheduleAtFixedRate(frameGrabber, 0L, 1L, TimeUnit.MILLISECONDS);
+                this.faceTimer = Executors.newSingleThreadScheduledExecutor();
+                this.faceTimer.scheduleAtFixedRate(faceDetectorRunnable, 1000L, 1L, TimeUnit.MILLISECONDS);
 
                 this.cameraButton.setText("Stop Camera");
             }
@@ -116,24 +133,35 @@ public class CameraAppFXController {
     @FXML
     protected void startTracking(ActionEvent event)
     {
-        if (!this.cameraActive) {
+        if(cameraActive)
+        {
+            this.cameraActive = false;
+            this.cameraButton.setText("Start Camera");
+            this.stopCamera();
+        }
+
+        if (!this.trackerActive)
+        {
             this.capture.open(cameraId);
-            if (this.capture.isOpened()) {
-                this.cameraActive = true;
-                Runnable frameGrabber = new Runnable() {
-                    public void run() {
+            if (this.capture.isOpened())
+            {
+                this.trackerActive = true;
+                Runnable frameGrabber = new Runnable()
+                {
+                    public void run()
+                    {
                         frame = CameraAppFXController.this.grabFrame();
 
                         Mat frameCopy = frame.clone();
 
                         imageToShow = Utils.mat2Image(frameCopy);
 
-                        CameraAppFXController.this.updateImageView(CameraAppFXController.this.trackerFrame, imageToShow);
+                        CameraAppFXController.this.trackerFrame.setImage(imageToShow);
                     }
                 };
 
-                this.timer = Executors.newSingleThreadScheduledExecutor();
-                this.timer.scheduleAtFixedRate(frameGrabber, 0L, 1L, TimeUnit.MILLISECONDS);
+                this.trackerTimer = Executors.newSingleThreadScheduledExecutor();
+                this.trackerTimer.scheduleAtFixedRate(frameGrabber, 0L, 1L, TimeUnit.MILLISECONDS);
 
                 this.trackerButton.setText("Stop Tracking");
             }
@@ -142,7 +170,7 @@ public class CameraAppFXController {
             }
         }
         else {
-            this.cameraActive = false;
+            this.trackerActive = false;
             this.trackerButton.setText("Start Tracking");
             this.stopTracking();
         }
@@ -181,30 +209,36 @@ public class CameraAppFXController {
     }
 
     @FXML
-    protected void noEffects(ActionEvent event) {
+    protected void noEffects(ActionEvent event)
+    {
         blackAndWhite = false;
         blur = false;
         negative = false;
     }
 
     @FXML
-    protected void save_image(ActionEvent event) {
+    protected void save_image(ActionEvent event)
+    {
         System.out.println(imageToShow);
         BufferedImage image;
-        try {
+        try
+        {
             image = utils.Mat2BufferedImage(frame);
             String timeStamp = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date());
             String filename = "Snap-"+timeStamp;
             File file = new File(base_file + filename);
-            try {
+            try
+            {
                 ImageIO.write(image, "png", file);
                 System.out.println("File " + filename + " saved!");
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println("Image not saved!");
             e.printStackTrace();
         }
@@ -217,19 +251,23 @@ public class CameraAppFXController {
 
     private Mat grabFrame() {
         Mat frame = new Mat();
-        if (this.capture.isOpened()) {
-            try {
+        if (this.capture.isOpened())
+        {
+            try
+            {
                 this.capture.read(frame);
-                if (!frame.empty()) {
+                if (!frame.empty())
+                {
                     if(blackAndWhite)
                         Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
                     if(blur)
                         Imgproc.GaussianBlur(frame, frame, new Size(15, 15), 0);
                     if(negative)
                         frame = Utils.getNegative(frame);
-//                    Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BayerGB2RGB_VNG);
                 }
-            } catch (Exception var3) {
+            }
+            catch (Exception var3)
+            {
                 System.err.println(var3);
             }
         }
@@ -237,37 +275,50 @@ public class CameraAppFXController {
         return frame;
     }
 
-    private void stopCamera() {
-        if (this.timer != null && !this.timer.isShutdown()) {
-            try {
-                this.timer.shutdown();
-                this.timer.awaitTermination(33L, TimeUnit.MILLISECONDS);
+    private void stopCamera()
+    {
+        if (this.cameraTimer != null && !this.cameraTimer.isShutdown())
+        {
+            try
+            {
+                this.cameraTimer.shutdown();
+                this.cameraTimer.awaitTermination(33L, TimeUnit.MILLISECONDS);
                 this.currentFrame.setImage(null);
-            } catch (InterruptedException var2) {
+            }
+            catch (InterruptedException var2)
+            {
                 System.err.println(var2);
             }
         }
 
-        if (this.timer2 != null && !this.timer2.isShutdown()) {
-            try {
-                this.timer2.shutdown();
-                this.timer2.awaitTermination(33L, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException var2) {
+        if (this.faceTimer != null && !this.faceTimer.isShutdown())
+        {
+            try
+            {
+                this.faceTimer.shutdown();
+                this.faceTimer.awaitTermination(33L, TimeUnit.MILLISECONDS);
+                this.currentFrame.setImage(null);
+            }
+            catch (InterruptedException var2)
+            {
                 System.err.println(var2);
             }
         }
 
-        if (this.capture.isOpened()) {
+        if (this.capture.isOpened())
+        {
             this.capture.release();
         }
     }
 
-    private void stopTracking() {
-        if (this.timer != null && !this.timer.isShutdown()) {
+    private void stopTracking()
+    {
+        if (this.trackerTimer != null && !this.trackerTimer.isShutdown())
+        {
             try
             {
-                this.timer.shutdown();
-                this.timer.awaitTermination(33L, TimeUnit.MILLISECONDS);
+                this.trackerTimer.shutdown();
+                this.trackerTimer.awaitTermination(33L, TimeUnit.MILLISECONDS);
                 this.trackerFrame.setImage(null);
             }
             catch (InterruptedException var2)
@@ -276,14 +327,11 @@ public class CameraAppFXController {
             }
         }
 
-        if (this.capture.isOpened()) {
+        if (this.capture.isOpened())
+        {
             this.capture.release();
         }
 
-    }
-
-    private void updateImageView(ImageView view, Image image) {
-        view.setImage(image);
     }
 
     protected void setClosed() {
