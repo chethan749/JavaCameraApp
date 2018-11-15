@@ -5,35 +5,79 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CameraAppFXController">
-    <bottom>
-        <HBox alignment="CENTER" minHeight="55.0" prefHeight="55.0" prefWidth="425.0">
-         <Button mnemonicParsing="false" onAction="#save_image" prefHeight="26.0" prefWidth="100.0" text="Snap" />
-            <Button fx:id="button" alignment="CENTER" mnemonicParsing="false" onAction="#startCamera" text="Start Camera" />
-            <padding>
-                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-            </padding>
-        </HBox>
-    </bottom>
-    <center>
-        <ImageView fx:id="currentFrame" fitHeight="480.0" fitWidth="640.0" />
-    </center>
-   <top>
-      <MenuBar fx:id="menu" BorderPane.alignment="CENTER">
-        <menus>
-          <Menu fx:id="effectsMenu" mnemonicParsing="false" text="Effects">
-            <items>
-                  <MenuItem fx:id="noEffectsMenuEntry" mnemonicParsing="false" onAction="#noEffects" text="No effects" />
-              <MenuItem fx:id="blackAndWhiteMenuEntry" mnemonicParsing="false" onAction="#setBlackAndWhite" text="Black and White" />
-                  <MenuItem fx:id="blurMenuEntry" mnemonicParsing="false" onAction="#setBlur" text="Blur" />
-                  <MenuItem fx:id="negativeMenuEntry" mnemonicParsing="false" onAction="#setNegative" text="Negative" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-</BorderPane>
+<TabPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CameraAppFXController">
+   <tabs>
+       <Tab text="Camera">
+           <content>
+               <BorderPane prefHeight="600.0" prefWidth="800.0">
+                   <bottom>
+                       <HBox alignment="CENTER" minHeight="40.0" prefHeight="50.0" prefWidth="480.0">
+                           <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#save_image" prefHeight="26.0" prefWidth="100.0" text="Snap">
+                               <HBox.margin>
+                                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                               </HBox.margin></Button>
+                           <Button fx:id="cameraButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#startCamera" text="Start Camera" />
+                           <padding>
+                               <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                           </padding>
+                           <BorderPane.margin>
+                               <Insets />
+                           </BorderPane.margin>
+                       </HBox>
+                   </bottom>
+                   <center>
+                       <ImageView fx:id="currentFrame" fitHeight="480.0" fitWidth="640.0" />
+                   </center>
+                   <top>
+                       <MenuBar fx:id="menu" BorderPane.alignment="CENTER">
+                           <menus>
+                               <Menu fx:id="effectsMenu" mnemonicParsing="false" text="Effects">
+                                   <items>
+                                       <MenuItem fx:id="noEffectsMenuEntry" mnemonicParsing="false" onAction="#noEffects" text="No effects" />
+                                       <MenuItem fx:id="blackAndWhiteMenuEntry" mnemonicParsing="false" onAction="#setBlackAndWhite" text="Black and White" />
+                                       <MenuItem fx:id="blurMenuEntry" mnemonicParsing="false" onAction="#setBlur" text="Blur" />
+                                       <MenuItem fx:id="negativeMenuEntry" mnemonicParsing="false" onAction="#setNegative" text="Negative" />
+                                   </items>
+                               </Menu>
+                           </menus>
+                       </MenuBar>
+                   </top>
+               </BorderPane>
+           </content>
+       </Tab>
+      <Tab text="Object Tracker">
+         <content>
+            <BorderPane prefHeight="600.0" prefWidth="800.0">
+               <center>
+                  <ImageView fx:id="trackerFrame" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+               </center>
+               <bottom>
+                  <HBox alignment="CENTER" minHeight="40.0" prefHeight="50.0" prefWidth="480.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="choosePointsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#pushPoint" text="Choose Points">
+                           <HBox.margin>
+                              <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="trackerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#startTracking" text="Start Tracking">
+                           <HBox.margin>
+                              <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                  </HBox>
+               </bottom>
+            </BorderPane>
+         </content>
+      </Tab>
+   </tabs>
+</TabPane>

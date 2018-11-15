@@ -1,5 +1,8 @@
 # Ignore .idea
 .idea/
 
+# Ignore out
+out/
+
 # Ignore snaps
 snaps/

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -16,7 +17,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("CameraApp.fxml"));
-            BorderPane rootElement = loader.load();
+            TabPane rootElement = loader.load();
             Scene scene = new Scene(rootElement, 800.0D, 600.0D);
             primaryStage.setTitle("Camera");
             primaryStage.setScene(scene);
