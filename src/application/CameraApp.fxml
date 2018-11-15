@@ -60,7 +60,7 @@
                <bottom>
                   <HBox alignment="CENTER" minHeight="40.0" prefHeight="50.0" prefWidth="480.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="choosePointsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#pushPoint" text="Choose Points">
+                        <Button fx:id="choosePointsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readPoints" text="Choose Points">
                            <HBox.margin>
                               <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                            </HBox.margin>
