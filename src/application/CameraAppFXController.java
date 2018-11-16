@@ -97,7 +97,9 @@ public class CameraAppFXController
 
                         Mat frameCopy = frame.clone();
 
-                        Imgproc.putText(frameCopy, "Faces detected: " + ((faces != null && !faces.empty())? faces.rows() : 0), new Point(400, 30), Core.FONT_HERSHEY_COMPLEX, 0.7, new Scalar(1, 0, 0), 2);
+                        if(!blackAndWhite && !blur && !negative)
+                            Imgproc.putText(frameCopy, "Faces detected: " + ((faces != null && !faces.empty())? faces.rows() : 0), new Point(400, 30),
+                                Core.FONT_HERSHEY_COMPLEX, 0.7, new Scalar(1, 0, 0), 2);
                         if(faces != null && !faces.empty())
                             imageToShow = Utils.mat2Image(faceDetector.drawFaces(frameCopy, faces));
                         else
@@ -152,7 +154,7 @@ public class CameraAppFXController
             this.stopCamera();
         }
 
-        if(!pointsTimer.isShutdown())
+        if(readPoints)
         {
             this.choosePointsButton.setText("Choose Points");
             this.readPoints = false;
@@ -284,7 +286,6 @@ public class CameraAppFXController
 
         this.capture.open(cameraId);
         points.clear();
-        trackedPoints.release();
 
         Runnable frameGrabber = new Runnable()
         {
@@ -309,6 +310,7 @@ public class CameraAppFXController
         {
             readPoints = true;
             choosePointsButton.setText("Done");
+            trackedPoints.release();
             this.pointsTimer = Executors.newSingleThreadScheduledExecutor();
             this.pointsTimer.scheduleAtFixedRate(frameGrabber, 0L, 30L, TimeUnit.MILLISECONDS);
         }
@@ -333,7 +335,7 @@ public class CameraAppFXController
             try
             {
                 this.capture.read(frame);
-                if (!frame.empty())
+                if (!frame.empty() && cameraActive)
                 {
                     if(blackAndWhite)
                         Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);

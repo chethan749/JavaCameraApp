@@ -3,13 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="71b2ba21-8270-4320-bc8d-412761fe97a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraApp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraApp.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCameraApp/application/CameraAppFXController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/CameraApp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/CameraApp.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/sample/Controller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/sample/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCameraApp/sample/sample.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/CameraAppFXController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/CameraAppFXController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/sample.fxml" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,14 +26,15 @@
     <session id="-1833026585">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
+          <entry key="project.closed" value="9" />
           <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.12" value="2" />
+          <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.44" value="1" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.opened" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -50,12 +55,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="fxml" value="25" />
-          <entry key="java" value="5402" />
+          <entry key="java" value="5455" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5402" />
+          <entry key="JAVA" value="5455" />
           <entry key="XML" value="25" />
         </counts>
       </usages-collector>
@@ -90,8 +95,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/application/CameraAppFXController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="845">
-              <caret line="430" column="35" selection-start-line="430" selection-start-column="35" selection-end-line="430" selection-end-column="35" />
+            <state relative-caret-position="45">
+              <caret line="156" column="21" selection-start-line="156" selection-start-column="21" selection-end-line="156" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -115,6 +120,7 @@
     <findStrings>
       <find>button</find>
       <find>setClosed</find>
+      <find>points.cle</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -139,11 +145,10 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="PackagesPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -165,11 +170,28 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="CameraApp" type="58d84e3e:PackageViewProjectNode" />
+              <item name="JavaCameraApp" type="616d4139:PackageViewModuleNode" />
+            </path>
+            <path>
+              <item name="CameraApp" type="58d84e3e:PackageViewProjectNode" />
+              <item name="JavaCameraApp" type="616d4139:PackageViewModuleNode" />
+              <item name="application" type="1f31426a:PackageElementNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542308226505" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542343456314" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -224,7 +246,7 @@
   <component name="ToolWindowManager">
     <frame x="61" y="25" width="1859" height="1055" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.16712631" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.17043574" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -307,8 +329,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/application/CameraAppFXController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="845">
-          <caret line="430" column="35" selection-start-line="430" selection-start-column="35" selection-end-line="430" selection-end-column="35" />
+        <state relative-caret-position="45">
+          <caret line="156" column="21" selection-start-line="156" selection-start-column="21" selection-end-line="156" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
